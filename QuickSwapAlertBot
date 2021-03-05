@@ -1,0 +1,158 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Mar  5 11:59:21 2021
+
+@author: Mspits
+"""
+def telegram_bot_sendtext(bot_message):
+    
+    bot_token = '1646234714:AAGdw4bixfLCz_WWF2Lz6fm2JX8VUkC8dYg'
+    bot_chatID = '1295095047'
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+
+    response = requests.get(send_text)
+
+    return response.json()
+    
+
+import requests 
+import json
+import pandas as pd
+import time
+
+
+
+url = 'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap'
+
+GHST_Query = """{
+ pair(id: "0x096c5ccb33cfc5732bcd1f3195c13dbefc4c82f4"){
+     token0 {
+       symbol
+       name
+     }
+     token1 {
+       symbol
+       name
+     }
+     reserve0
+     reserve1
+     reserveUSD
+     token0Price
+     token1Price
+ }
+}
+
+"""
+
+
+maUSDT_Query = """{
+ pair(id: "0x2eea2d478787dfcaa4aa5398622556b9d775f194"){
+     token0 {
+       symbol
+       name
+     }
+     token1 {
+       symbol
+       name
+     }
+     reserve0
+     reserve1
+     reserveUSD
+     token0Price
+     token1Price
+ }
+}
+
+"""
+
+
+maTUSD_Query = """{
+ pair(id: "0xc8f51057e1aea189f18011a278432ef2dc6d204a"){
+     token0 {
+       symbol
+       name
+     }
+     token1 {
+       symbol
+       name
+     }
+     reserve0
+     reserve1
+     reserveUSD
+     token0Price
+     token1Price
+ }
+}
+
+"""
+
+
+maDAI_Query = """{
+ pair(id: "0x6fc2a79b1f0c31ec4dc4343157cbd8becb0f6aaf"){
+     token0 {
+       symbol
+       name
+     }
+     token1 {
+       symbol
+       name
+     }
+     reserve0
+     reserve1
+     reserveUSD
+     token0Price
+     token1Price
+ }
+}
+
+"""
+
+usd_trigger_up = 1.05
+usd_trigger_low = 0.95
+
+while(1) :
+
+    
+    r = requests.post(url, json={'query': GHST_Query})
+    json_data = json.loads(r.text)
+    print("prix du GHST: " + json_data['data']['pair']['token0Price'])
+    prix_ghst = json_data['data']['pair']['token0Price']
+
+    if (float(prix_ghst) < 1.505) :
+        telegram_bot_sendtext('fils de pute le prix du GHST est de ' + str(prix_ghst))
+    
+    time.sleep(10)
+    
+    
+    r = requests.post(url, json={'query': maDAI_Query})
+    json_data = json.loads(r.text)
+    print("prix du maDAI: " + json_data['data']['pair']['token0Price'])
+    prix_maDAI = json_data['data']['pair']['token0Price']
+
+    if (float(prix_maDAI) < usd_trigger_low or float(prix_maDAI) > usd_trigger_up ) :
+        telegram_bot_sendtext('fils de pute le prix du maDAI est de ' + str(prix_maDAI))
+    
+    time.sleep(10)
+    
+    
+    r = requests.post(url, json={'query': maUSDT_Query})
+    json_data = json.loads(r.text)
+    print("prix du maUSDT: " + json_data['data']['pair']['token0Price'])
+    prix_maUSDT = json_data['data']['pair']['token0Price']
+
+    if (float(prix_maUSDT) < usd_trigger_low or float(prix_maUSDT) > usd_trigger_up ) :
+        telegram_bot_sendtext('fils de pute le prix du maUSDT est de ' + str(prix_maUSDT))
+    
+    time.sleep(10)
+    
+    
+    r = requests.post(url, json={'query': maTUSD_Query})
+    json_data = json.loads(r.text)
+    print("prix du maTUSD: " + json_data['data']['pair']['token0Price'])
+    prix_maTUSD = json_data['data']['pair']['token0Price']
+
+    if (float(prix_maTUSD) < usd_trigger_low or float(prix_maTUSD) > usd_trigger_up ) :
+        telegram_bot_sendtext('fils de pute le prix du maTUSD est de ' + str(prix_maTUSD))
+    
+    time.sleep(10)
+    
