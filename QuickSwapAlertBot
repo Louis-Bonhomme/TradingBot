@@ -129,6 +129,54 @@ FRAX_Query = """{
 """
 
 
+MATIC_Query = """{
+ pair(id: "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827"){
+     token0 {
+       symbol
+       name
+     }
+     token1 {
+       symbol
+       name
+     }
+     reserve0
+     reserve1
+     reserveUSD
+     token0Price
+     token1Price
+ }
+}
+
+"""
+
+
+
+
+
+rdUSD_Query = """{
+ pair(id: "0x501082e1926a721cdcb1254edebaa0717d2a0d91"){
+     token0 {
+       symbol
+       name
+     }
+     token1 {
+       symbol
+       name
+     }
+     reserve0
+     reserve1
+     reserveUSD
+     token0Price
+     token1Price
+ }
+}
+
+"""
+
+
+
+
+
 usd_trigger_up = 1.05
 usd_trigger_low = 0.95
 
@@ -140,7 +188,7 @@ while(1) :
     print("prix du GHST: " + json_data['data']['pair']['token0Price'])
     prix_ghst = json_data['data']['pair']['token0Price']
 
-    if (float(prix_ghst) < 1.505 or float(prix_ghst) > 1.69) :
+    if (float(prix_ghst) < 1.2 or float(prix_ghst) > 1.69) :
         telegram_bot_sendtext('fils de pute le prix du GHST est de ' + str(prix_ghst))
     
     time.sleep(10)
@@ -184,7 +232,27 @@ while(1) :
     print("prix du FRAX: " + json_data['data']['pair']['token1Price'])
     prix_FRAX = json_data['data']['pair']['token1Price']
 
-    if (float(prix_FRAX) < usd_trigger_low or float(prix_FRAX) > usd_trigger_up ) :
-        telegram_bot_sendtext('fils de pute le prix du FRAX est de ' + str(prix_FRAX))
+   # if (float(prix_FRAX) < usd_trigger_low or float(prix_FRAX) > usd_trigger_up ) :
+   #     telegram_bot_sendtext('fils de pute le prix du FRAX est de ' + str(prix_FRAX))
+    
+    
+    time.sleep(10)
+    r = requests.post(url, json={'query': MATIC_Query})
+    json_data = json.loads(r.text)
+    print("prix du MATIC: " + json_data['data']['pair']['token1Price'])
+    prix_MATIC = json_data['data']['pair']['token1Price']
+
+    if (float(prix_MATIC) < 0.33 or float(prix_MATIC) > 0.40 ) :
+        telegram_bot_sendtext('fils de pute le prix du MATIC est de ' + str(prix_MATIC))
+    
+    
+    time.sleep(10)
+    r = requests.post(url, json={'query': rdUSD_Query})
+    json_data = json.loads(r.text)
+    print("prix du rdUSD: " + json_data['data']['pair']['token1Price'])
+    prix_rdUSD = json_data['data']['pair']['token0Price']
+
+    if (float(prix_rdUSD) < 1 or float(prix_rdUSD) > 1.5 ) :
+        telegram_bot_sendtext('fils de pute le prix du rdUSD est de ' + str(prix_rdUSD))
     
     time.sleep(10)
