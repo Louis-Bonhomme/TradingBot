@@ -221,7 +221,7 @@ maUSDC_Query = """{
 
 """
 
-
+t_query = 2
 usd_trigger_up = 1.05
 usd_trigger_low = 0.97
 
@@ -236,7 +236,7 @@ while(1) :
     if (float(prix_ghst) < 0.95*float(binance_ghst()) or float(prix_ghst) > 1.05*float(binance_ghst())) :
         telegram_bot_sendtext('fils de pute le prix du GHST est de ' + str(prix_ghst))
     
-    time.sleep(10)
+    time.sleep(t_query)
     
     
     r = requests.post(url, json={'query': maUSDC_Query})
@@ -247,7 +247,7 @@ while(1) :
     if (float(prix_maUSDC) < 1.025 or float(prix_maUSDC) > 1.065 ) :
         telegram_bot_sendtext('fils de pute le prix du maUSDC est de ' + str(prix_maUSDC))
     
-    time.sleep(10)
+    time.sleep(t_query)
     
     
     r = requests.post(url, json={'query': maDAI_Query})
@@ -258,7 +258,7 @@ while(1) :
     if (float(prix_maDAI) < usd_trigger_low or float(prix_maDAI) > usd_trigger_up ) :
         telegram_bot_sendtext('fils de pute le prix du maDAI est de ' + str(prix_maDAI))
     
-    time.sleep(10)
+    time.sleep(t_query)
     
     
     r = requests.post(url, json={'query': maUSDT_Query})
@@ -269,7 +269,7 @@ while(1) :
     if (float(prix_maUSDT) < usd_trigger_low or float(prix_maUSDT) > usd_trigger_up ) :
         telegram_bot_sendtext('fils de pute le prix du maUSDT est de ' + str(prix_maUSDT))
     
-    time.sleep(10)
+    time.sleep(t_query)
     
     
     r = requests.post(url, json={'query': maTUSD_Query})
@@ -280,7 +280,7 @@ while(1) :
     if (float(prix_maTUSD) < usd_trigger_low or float(prix_maTUSD) > usd_trigger_up ) :
         telegram_bot_sendtext('fils de pute le prix du maTUSD est de ' + str(prix_maTUSD))
     
-    time.sleep(10)
+    time.sleep(t_query)
     
     
     r = requests.post(url, json={'query': FRAX_Query})
@@ -292,7 +292,7 @@ while(1) :
    #     telegram_bot_sendtext('fils de pute le prix du FRAX est de ' + str(prix_FRAX))
     
     
-    time.sleep(10)
+    time.sleep(t_query)
 
 
     
