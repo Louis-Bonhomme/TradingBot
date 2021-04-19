@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Mar  5 11:59:21 2021
-
-@author: etx01msp
-"""
 def telegram_bot_sendtext(bot_message):
     
     bot_token = '1646234714:AAGdw4bixfLCz_WWF2Lz6fm2JX8VUkC8dYg'
@@ -242,6 +237,29 @@ USDT_Query = """{
 
 """
 
+
+
+DAI_Query = """{
+ pair(id: "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd"){
+     token0 {
+       symbol
+       name
+     }
+     token1 {
+       symbol
+       name
+     }
+     reserve0
+     reserve1
+     reserveUSD
+     token0Price
+     token1Price
+ }
+}
+
+"""
+
+
 t_query = 2
 
 usd_trigger_up = 1.05
@@ -265,7 +283,7 @@ while(1) :
     print("prix du maUSDC: " + json_data['data']['pair']['token0Price'])
     prix_maUSDC = json_data['data']['pair']['token0Price']
 
-    if (float(prix_maUSDC) < 1 or float(prix_maUSDC) > 1.065 ) :
+    if (float(prix_maUSDC) < 0.99 or float(prix_maUSDC) > 1.065 ) :
         telegram_bot_sendtext('fils de pute le prix du maUSDC est de ' + str(prix_maUSDC))
     
     time.sleep(t_query)
@@ -303,6 +321,8 @@ while(1) :
     
     time.sleep(t_query)
     
+
+    
     
     r = requests.post(url, json={'query': USDT_Query})
     json_data = json.loads(r.text)
@@ -311,6 +331,17 @@ while(1) :
 
     if (float(prix_USDT) < usd_trigger_low or float(prix_USDT) > usd_trigger_up ) :
         telegram_bot_sendtext('fils de pute le prix du USDT est de ' + str(prix_USDT))
+    
+    time.sleep(t_query)
+    
+    
+    r = requests.post(url, json={'query': DAI_Query})
+    json_data = json.loads(r.text)
+    print("prix du DAI: " + json_data['data']['pair']['token1Price'])
+    prix_DAI = json_data['data']['pair']['token0Price']
+
+    if (float(prix_DAI) < usd_trigger_low or float(prix_DAI) > usd_trigger_up ) :
+        telegram_bot_sendtext('fils de pute le prix du DAI est de ' + str(prix_DAI))
     
     time.sleep(t_query)
     
@@ -334,7 +365,7 @@ while(1) :
     print("prix du MATIC: " + json_data['data']['pair']['token1Price'])
     prix_MATIC = json_data['data']['pair']['token1Price']
 
-    if (float(prix_MATIC) < 0.95*float(binance_matic()) or float(prix_MATIC) > 1.05*float(binance_matic()) ) :
+    if (float(prix_MATIC) < 0.96*float(binance_matic()) or float(prix_MATIC) > 1.04*float(binance_matic()) ) :
         telegram_bot_sendtext('fils de pute le prix du MATIC est DIFFERENT SUR BINANCE ET QUICKSWAP ' + str(prix_MATIC))
     
 #    
@@ -359,3 +390,4 @@ while(1) :
 #        telegram_bot_sendtext('fils de pute le prix du dUSD est de ' + str(prix_dUSD))
 #    
 #    time.sleep(10)
+x
