@@ -24,6 +24,8 @@ def binance_ghst():
     return binanceTick1.json()['price']
 
 
+url_aavegotchi = 'https://api.thegraph.com/subgraphs/name/cinnabarhorse/aavegotchi-aragon'
+
 url = 'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap'
 
 GHST_Query = """{
@@ -239,6 +241,16 @@ USDT_Query = """{
 
 
 
+GHST_Curve_Query = """
+
+{
+    orders(first:1, orderBy:batchId, orderDirection:desc) {
+		price
+    }
+  }
+"""
+
+
 DAI_Query = """{
  pair(id: "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd"){
      token0 {
@@ -267,6 +279,11 @@ usd_trigger_low = 0.95
 
 while(1) :
 
+
+
+
+
+
     r = requests.post(url, json={'query': GHST_Query})
     json_data = json.loads(r.text)
     print("prix du GHST: " + json_data['data']['pair']['token0Price'])
@@ -277,6 +294,30 @@ while(1) :
     
     time.sleep(t_query)
     
+
+    
+    r = requests.post(url_aavegotchi, json={'query': GHST_Curve_Query})
+    json_data = json.loads(r.text)
+    prix_ghst_curve = float(json_data['data']['orders'][0]['price'])
+    prix_ghst_curve = prix_ghst_curve / 1000000
+
+    print("prix du GHST sur curve: " + str(prix_ghst_curve))
+
+    if (prix_ghst_curve < 0.93*float(prix_ghst()) or prix_ghst_curve > 1.07*float(prix_ghst())) :
+        telegram_bot_sendtext('fils de pute le prix du GHST est de ' + prix_ghst_curve)
+    
+    time.sleep(t_query)
+    
+    
+
+
+
+
+
+
+
+
+
     
     r = requests.post(url, json={'query': maUSDC_Query})
     json_data = json.loads(r.text)
