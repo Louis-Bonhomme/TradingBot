@@ -260,7 +260,7 @@ DAI_Query = """{
 """
 
 
-t_query = 2
+t_query = 0.5
 
 usd_trigger_up = 1.05
 usd_trigger_low = 0.95
@@ -390,4 +390,3 @@ while(1) :
 #        telegram_bot_sendtext('fils de pute le prix du dUSD est de ' + str(prix_dUSD))
 #    
 #    time.sleep(10)
-x
